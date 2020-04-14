@@ -59,3 +59,9 @@ python manage.py runserver
 ```
 
 Lalu buka browser http://localhost:8000
+
+## Peta Dunia
+!["Indonesia"](https://raw.githubusercontent.com/irfanpule/contoh-geodjango/master/tangkapan_layer/indonesia.png)
+
+## Peta Indonesia
+!["Lampung"](https://raw.githubusercontent.com/irfanpule/contoh-geodjango/master/tangkapan_layer/lampung.png)
