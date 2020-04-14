@@ -1,0 +1,62 @@
+{% extends 'indonesia/base.html' %}
+
+{% block extra_css %}
+   <style>
+    #mapid { 
+        height: 512px; 
+        width: 100%;
+    }
+   </style>
+{% endblock  %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>{{ title }}</h1>
+        <div class="form-group">
+            <label>Daftar Negara</label>
+            <select class="form-control" id="selectCountry">
+                <option> -- pilih -- </option>
+                {% for map in worlds %}
+                    <option value="{% url 'world:country' map.id %}"> {{ map.name }} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="mapid"></div>
+    </div>
+</div>
+{% endblock  %}
+
+{% block extra_js %}
+<script>
+    var mymap = L.map('mapid').setView([51.505, -0.09], 2);
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXJmYW5wdWxlIiwiYSI6ImNqdnpxbHFvbzAzM3UzeWxrcWtkbTVhamIifQ.TJM77G3WOEIOIYzk_IiWKQ', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox/streets-v11',
+		tileSize: 512,
+		zoomOffset: -1
+	}).addTo(mymap);
+    
+    var removeLayer = null;
+    $("#selectCountry").on("change", function() {
+        var url = document.location.origin + $(this).val();
+        $.get(url, function(data, status) {
+            if(removeLayer != null) {
+                mymap.removeLayer(removeLayer);
+            }
+            var geoJsonLayer = L.geoJSON(data.geojson).addTo(mymap);
+            geoJsonLayer.bindPopup(function (layer) {
+                return data.name
+            }).addTo(mymap);
+            mymap.flyToBounds(geoJsonLayer.getBounds(), {'duration':0.50, 'zoom':3});
+            removeLayer = geoJsonLayer;
+        });
+    });
+</script>
+{% endblock  %}
+
