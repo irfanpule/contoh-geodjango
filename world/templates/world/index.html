@@ -22,7 +22,8 @@
                 {% endfor %}
             </select>
         </div>
-
+        
+        <div class="loading">Loading&#8230;</div>
         <div id="mapid"></div>
     </div>
 </div>
@@ -30,6 +31,8 @@
 
 {% block extra_js %}
 <script>
+    $(".loading").hide();
+
     var mymap = L.map('mapid').setView([51.505, -0.09], 2);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXJmYW5wdWxlIiwiYSI6ImNqdnpxbHFvbzAzM3UzeWxrcWtkbTVhamIifQ.TJM77G3WOEIOIYzk_IiWKQ', {
@@ -45,6 +48,7 @@
     var removeLayer = null;
     $("#selectCountry").on("change", function() {
         var url = document.location.origin + $(this).val();
+        $(".loading").show();
         $.get(url, function(data, status) {
             if(removeLayer != null) {
                 mymap.removeLayer(removeLayer);
@@ -55,6 +59,7 @@
             }).addTo(mymap);
             mymap.flyToBounds(geoJsonLayer.getBounds(), {'duration':0.50, 'zoom':3});
             removeLayer = geoJsonLayer;
+            $(".loading").hide();
         });
     });
 </script>

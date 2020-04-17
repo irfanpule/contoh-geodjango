@@ -22,6 +22,8 @@
                 {% endfor %}
             </select>
         </div>
+
+        <div class="loading">Loading&#8230;</div>
         <div id="mapid"></div>
     </div>
 </div>
@@ -29,6 +31,8 @@
 
 {% block extra_js %}
 <script>
+    $(".loading").hide();
+
     var mymap = L.map('mapid').setView([-0.5183857,121.4951596], 4);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaXJmYW5wdWxlIiwiYSI6ImNqdnpxbHFvbzAzM3UzeWxrcWtkbTVhamIifQ.TJM77G3WOEIOIYzk_IiWKQ', {
@@ -43,6 +47,7 @@
     
     var removeLayer = null;
     $("#selectProvinsi").on("change", function() {
+        $(".loading").show();
         var url = document.location.origin + $(this).val();
         $.get(url, function(data, status) {
             if(removeLayer != null) {
@@ -54,9 +59,8 @@
             }).addTo(mymap);
             mymap.flyToBounds(geoJsonLayer.getBounds(), {'duration':0.50});
             removeLayer = geoJsonLayer
+            $(".loading").hide();
         });
     });
-
-    
 </script>
 {% endblock  %}
