@@ -10,6 +10,17 @@ Pada contoh proyek ini terdapat data spasial batas-batas provinsi di Indonesia d
   - virtualenv (disarankan)
 
 ## Cara menggunakan
+Buat direktori baru misal `GeoDjango` melalui file manager atau CLI
+```
+mkdir GeoDjango
+```
+Lalu masuk ke direktori tersebut
+
+Clone proyek ini
+```
+git clone https://github.com/irfanpule/contoh-geodjango.git
+```
+
 Buat virtual environment terlebih dahulu
 ```
 virtualenv geodjango_env
@@ -21,7 +32,6 @@ source geodjango_env/bin/activate
 ```
 
 Instal dependensi
-
 ```
 $ pip install -r requirements.txt
 ```
